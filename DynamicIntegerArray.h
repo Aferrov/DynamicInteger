@@ -4,26 +4,27 @@
 class DynamicIntegerArray
 {
     private:
-        int *data, size=10, pos;
+        int *data, size;
     public:
         DynamicIntegerArray()
         {
+            this->size=0;
             data= new int[size];
         }
         DynamicIntegerArray(int val)
         {
+            this->size=val;
             data= new int[size];
-            pos=val;
         }
         DynamicIntegerArray(const DynamicIntegerArray &o)
         {
             data=new int[o.size];
-            for(int i=0;i<o.pos;i++)
+            for(int i=0;i<o.size;i++)
                 data[i]=o.data[i];
         }
-        void set(int val,int posi)
+        void set(int val,int pos)
         {
-            data[posi]=val;
+            data[pos]=val;
         }
         int get(int pos)const
         {
@@ -31,27 +32,42 @@ class DynamicIntegerArray
         }
         void print() const{
             std::cout<<"[";
-            for(int i=0;i<pos;i++)
+            for(int i=0;i<size;i++)
                 std::cout<<data[i]<<" ";
             std::cout<<"]"<<std::endl;
         }
         void pushback(int val)
         {
-            data[pos]=val;
-            pos++;
+            int *newdata= new int[size+1];
+            for(int i=0;i<size;i++)
+                newdata[i]=data[i];
+            newdata[size]=val;
+            size++;
+            delete[] data;
+            this->data=newdata;
         }
-        void insertar(int val,int posi)
+        void insertar(int val,int pos)
         {
-            for(int i=pos;i>posi;i--)
-                data[i]=data[i-1];
-            data[posi]=val;
-            pos++;
+            int *newdata= new int[size+1];
+            for(int i=size;i>pos;i--)
+                newdata[i]=data[i-1];
+            for(int i=0;i<pos;i++)
+                newdata[i]=data[i];
+            newdata[pos]=val;
+            size++;
+            delete[] data;
+            this->data=newdata;
         }
-        void remove(int posi)
+        void remove(int pos)
         {
-            for(int i=posi;i<pos;i++)
-                data[i]=data[i+1];
-            pos--;
+            int *newdata= new int[size-1];
+            for(int i=pos;i<size-1;i++)
+                newdata[i]=data[i+1];
+            for(int i=0;i<pos;i++)
+                newdata[i]=data[i];
+            size--;
+            delete[] data;
+            this->data=newdata;
         }
         ~DynamicIntegerArray(){
             delete[] data;
