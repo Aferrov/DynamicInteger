@@ -20,7 +20,7 @@ int main()
 	a.print();
 	a.remove(2);
 	a.print();
-	a.remove(5);
+	a.remove(4);
 	a.print();
 	return 0;
 }
